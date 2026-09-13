@@ -6,9 +6,17 @@ This public copy contains status and remediation guidance only. Credentials, cus
 
 Status: ~~completed~~ = resolved by in-repo fix and recheck; **OPEN** = still requires external evidence or source-data remediation.
 
+## Remaining blockers — 15 open
+
+- Phase 1: client-owned session and entitlement state.
+- Phase 2: financial provenance acceptance.
+- Phase 3: production migration verification; individual entitlement; local runtime deployment checks.
+- Phase 4: payment provider configuration; individual report payment completion; live provider behavior.
+- Phase 5: overall recommendation accuracy; central scheme mapping; state-scheme mapping; subsidy accuracy and unknown scheme IDs; eligibility rule coverage; enforced CI gate.
+
 | Phase | Blocker | Reason | Solution | Resolution steps |
 |---|---|---|---|---|
-| Phase 1 | ~~GitHub Actions access~~ **COMPLETED — public repo and CI verified** | Quantara is accessible and Repository safety run 34766499057 completed successfully. | Keep the workflow scoped to Quantara and keep sensitive files excluded. | Retain the workflow URL; rerun after workflow changes; preserve secret/file guards. |
+| Phase 1 | ~~GitHub Actions access~~ **COMPLETED — public repo and CI verified** | Quantara is accessible and Repository safety runs 34766499057 and 34766565573 completed successfully. | Keep the workflow scoped to Quantara and keep sensitive files excluded. | Retain the workflow URL; rerun after workflow changes; preserve secret/file guards. |
 | Phase 1 | **OPEN — Client-owned session and entitlement state** | Browser storage is not the server source of truth; tenant ownership is incomplete. | Make authenticated server records authoritative. | Add tenant ownership/RLS; stop trusting local flags; add cross-user tests. |
 | Phase 2 | **OPEN — Financial provenance acceptance** | 19 active default assumptions lack independent metadata; no curated cost-head rows are loaded. | Load reviewed official source metadata and cost heads. | Load IDs/hashes/dates/reviewers; run strict provenance; rerun DPR/CMA smoke. |
 | Phase 3 | **OPEN — Production migration verification** | Local migrations 24–35 replayed; staging/production evidence is absent. | Replay and validate migrations in staging and production. | Back up; apply 24–35; check parity; run API/PDF/licensing smoke; retain rollback evidence. |
