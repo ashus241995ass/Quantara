@@ -1,0 +1,28 @@
+name: Repository safety
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject sensitive paths
+        shell: bash
+        run: |
+          if git ls-files | grep -E '(^|/)(\.env($|\.)|.*\.(pem|key|p12|pfx)$|release/|generated_dpr/|DPR KNOWLEDGE BASE/|data/)' ; then
+            echo 'Sensitive or generated path detected.'
+            exit 1
+          fi
+      - name: Reject obvious key material
+        shell: bash
+        run: |
+          if git grep -nIE 'BEGIN (RSA|OPENSSH|EC|PGP) PRIVATE KEY|AKIA[0-9A-Z]{16}|postgres(ql)?://[^[:space:]:]+:[^[:space:]@]+@' -- . ; then
+            echo 'Obvious credential material detected.'
+            exit 1
+          fi
